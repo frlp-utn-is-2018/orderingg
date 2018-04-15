@@ -1,4 +1,4 @@
-__INTEGRANTES DEL GRUPO 1:__
+__INTEGRANTES DEL GRUPO 1__
 
 -Botta, Teo
 
