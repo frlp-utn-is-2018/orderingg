@@ -37,7 +37,10 @@ $env:FLASK_APP="orderingg.py"
 flask db upgrade
 python fixture.py
 ```
-
+Grupo 2
+Nahuel Baez
+Leanrdo Frison
+Carlos Andrade
 ## Iniciar app
 
 En Linux
