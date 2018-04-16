@@ -1,3 +1,10 @@
+# Grupo 1
+
+   - Moradillo, Federico Nicolás
+   - Botta, Teo Mariano
+   - Macías, Ignacio
+   - Urán, Luis
+
 # Ordering
 
 Aplicación utilizada en la cursada 2018 de Ingenieria de Software. UTN-FRLP
