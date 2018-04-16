@@ -1,9 +1,9 @@
-__INTEGRANTES DEL GRUPO 1__
+##INTEGRANTES DEL GRUPO 1
 
--Botta, Teo
++Botta, Teo
 
--Macías, Ignacio
++Macías, Ignacio
 
--Moradillo, Federico
++Moradillo, Federico
 
--Urán, Luis
++Urán, Luis
