@@ -66,5 +66,5 @@ flask run
 
 Grupo 2
 Nahuel Baez
-Leanoardo Frison
+Leonardo Frison
 Carlos Andrade
