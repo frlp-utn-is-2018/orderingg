@@ -14,10 +14,11 @@
     <main class="container">
         <h1 class="title">Lista de compra</h1>
 
+
         <div class="columns">
             <div class="column is-12">
-                <button class="button is-primary is-pulled-right" onclick="Modal.open()">
-                    <span class="icon"><i class="fas fa-plus"></i></span>
+                <button class="btn btn-success is-pulled-right" onclick="Modal.open()">
+                    <span class="icon"><i class="fas fa-bars"></i></span>
                     <span>Agregar</span>
                 </button>
             </div>
@@ -66,7 +67,7 @@
     <script id="table-template" type="text/x-handlebars-template">
         <table class="table is-fullwidth is-hoverable is-striped">
             <thead>
-                <tr>
+                <tr style="font-weight: bold;">
                     <td>ID</td>
                     <td>Descripción</td>
                     <td>Precio unitario</td>
