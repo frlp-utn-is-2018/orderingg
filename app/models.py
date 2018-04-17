@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+<<<<<<< HEAD
 
+=======
+>>>>>>> 19746816272694bee49c6196186b0bb1693d3cd5
 from app import db
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property

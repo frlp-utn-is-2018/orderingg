@@ -65,7 +65,6 @@ flask run
 ```
 
 Grupo 2
-```bash
 Nahuel Baez
 Leonardo Frison
 Carlos Andrade
