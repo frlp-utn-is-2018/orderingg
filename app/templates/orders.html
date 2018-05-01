@@ -74,6 +74,7 @@
                     <th>Precio unitario</th>
                     <th>Cantidad</th>
                     <th>Precio total</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -84,6 +85,8 @@
                         <td>{{ price }}</td>
                         <td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
+                        <td><button class="button" onclick="API.deleteProduct(1, {{ id }})"><a href="javascript:location.reload()">Borrar</a></button></td>
+                        <!-- Borra un producto y recarga la pagina para mostrar el cambio -->
                     </tr>
                 {{/ each }}
             </tbody>

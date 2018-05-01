@@ -54,6 +54,16 @@ const API = (function () {
         });
     }
 
+        function deleteProduct(orderId, productId) { /*Funcion que elimina producto de la DB*/
+        return fetch(`/order/${ orderId }/product/${ productId }`,
+            {
+                method: 'DELETE'
+            }
+        )
+        
+        console.log('borro')
+    }
+
     /**
      * Agrega un producto a una orden
      **/
@@ -74,11 +84,14 @@ const API = (function () {
         });
     }
 
+
+
     return {
         getOrder,
         getProducts,
         getOrderProduct,
         editProduct,
-        addProduct
+        addProduct,
+        deleteProduct
     }
 })()
