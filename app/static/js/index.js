@@ -16,7 +16,7 @@
      **/
     function updateTotalPrice() {
         const totalPrice = state.selectedProduct.price * state.quantity;
-        if(state.quantity >= 0){ //Verifico que las cantidades sean positivas
+        if(state.quantity >= 0){ //Verifico que las cantidades sean positivas y no muestro valores al usuario en caso de ser negativo
         $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`
     }
     }
@@ -44,7 +44,8 @@
      *
      **/
     function onAddProduct() {
-        API.addProduct(1, state.selectedProduct, state.quantity)
+		if(state.quantity >= 1){				//Si es una cantidad válida, acepta los valores y los carga
+			API.addProduct(1, state.selectedProduct, state.quantity)
             .then(function (r) {
                 if (r.error) {
                     console.error(r.error);
@@ -56,6 +57,10 @@
                     refs.modal.close();
                 }
             });
+        }else{									//Si es nulo o negativo, muestra mensaje de error
+        	alert("Error. No puede ingresarse una cantidad negativa o nula.");
+        	refs.modal.close();
+        }
     }
 
     /**
