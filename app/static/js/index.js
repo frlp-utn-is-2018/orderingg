@@ -59,7 +59,6 @@
             });
         }else{									//Si es nulo o negativo, muestra mensaje de error
         	alert("Error. No puede ingresarse una cantidad negativa o nula.");
-        	refs.modal.close();
         }
     }
 
