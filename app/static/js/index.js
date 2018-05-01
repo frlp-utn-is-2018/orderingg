@@ -16,7 +16,9 @@
      **/
     function updateTotalPrice() {
         const totalPrice = state.selectedProduct.price * state.quantity;
+        if(state.quantity >= 0){
         $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`
+    }
     }
 
     /**
