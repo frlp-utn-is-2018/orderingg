@@ -16,7 +16,7 @@
      **/
     function updateTotalPrice() {
         const totalPrice = state.selectedProduct.price * state.quantity;
-        if(state.quantity >= 0){
+        if(state.quantity >= 0){ //Verifico que las cantidades sean positivas
         $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`
     }
     }
