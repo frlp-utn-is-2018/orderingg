@@ -7,8 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <style> thead {font-weight: bold;} </style>
+
 </head>
 <body>
     <main class="container">
@@ -16,9 +18,9 @@
 
         <div class="columns">
             <div class="column is-12">
-                <button class="button is-primary is-pulled-right" onclick="refs.modal.open()">
-                    <span class="icon"><i class="fas fa-plus"></i></span>
-                    <span>Agregar</span>
+                <button class="button is-primary is-pulled-right" style="background-color: #0000ff" onclick="refs.modal.open()">
+                    <span class="icon"><i class="fas fa-asterisk"></i></span>
+		    <span>Agregar</span>
                 </button>
             </div>
         </div>
@@ -44,7 +46,7 @@
                         <div class="field">
                             <label class="label">Cantidad</label>
                             <div class="control">
-                                <input id="quantity" class="input" type="number">
+                                <input id="quantity" class="input" type="number" min="0">
                             </div>
                         </div>
 
@@ -66,7 +68,8 @@
 
     <!-- Template handlebars de la tabla -->
     <script id="table-template" type="text/x-handlebars-template">
-        <table class="table is-fullwidth is-hoverable">
+        
+		<table class="table table-striped">
             <thead>
                 <tr>
                     <td>ID</td>
@@ -74,16 +77,19 @@
                     <td>Precio unitario</td>
                     <td>Cantidad</td>
                     <td>Precio total</td>
+		            <td>Botones</td>
                 </tr>
             </thead>
             <tbody>
                 {{# each products }}
                     <tr>
                         <td>{{ id }}</td>
-                        <td>{{ description }}</td>
+                        <td>{{ name }}</td>
                         <td>{{ price }}</td>
                         <td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
+			            <td><input type="button" value="Editar" class="button">
+                            <button class="button is-danger" onclick="API.deleteProduct({{ id }}); location.reload()"><span class="icon"><i class="fas fa-trash-alt"></i></span><span>Borrar</span></button></td>
                     </tr>
                 {{/ each }}
             </tbody>

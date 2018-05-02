@@ -73,12 +73,30 @@ const API = (function () {
             return r.json();
         });
     }
+    
+    function deleteProduct(productId){
+        const data = JSON.stringify({ product: productId })
+
+      return fetch(`/order/1/product/${ productId }`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: data
+            }
+        ).then(function toJson(r) {
+            return r.json();
+        });
+    }
 
     return {
         getOrder,
         getProducts,
         getOrderProduct,
         editProduct,
-        addProduct
+        addProduct,
+        deleteProduct
     }
 })()
