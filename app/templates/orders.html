@@ -31,13 +31,16 @@
             <div class="modal-card">
                 <header class="modal-card-head">
                     <p id="save-title" class="modal-card-title">Agregar producto</p>
-                    <p id="edit-title" hidden class="modal-card-title">Editar producto</p>
+                    <p id="edit-title" class="modal-card-title">Editar producto</p>
                     <button class="delete" aria-label="close" onclick="refs.modal.close()"></button>
                 </header>
                 <section class="modal-card-body">
                     <form>
-                        <div class="field">
-                            <labe class="label">Seleccionar producto</labe>
+                        <div id="selpro" class="field"> 
+                            <!-- le pongo un ID a esto para poder llamarlo desde 
+                                el modal.
+                            -->
+                            <label class="label">Seleccionar producto</label>
                             <div id="select" class="control"></div>
                         </div>
 
@@ -54,8 +57,8 @@
                     </form>
                 </section>
                 <footer class="modal-card-foot">
-                    <button id="save-button" class="button is-success">Guardar</button>
-                    <button id="edit-button" class="button is-warning">Editar</button>
+                    <button id="save-buttonE" class="button is-success">Guardar</button>
+                    <button id="save-buttonG" class="button is-success">Guardar</button>
                     <button class="button" onclick="refs.modal.close()">Cancelar</button>
                 </footer>
             </div>
@@ -75,6 +78,7 @@
                     <th>Cantidad</th>
                     <th>Precio total</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -85,7 +89,22 @@
                         <td>{{ price }}</td>
                         <td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
-                        <td><button class="button" onclick="API.deleteProduct(1, {{ id }})"><a href="javascript:location.reload()">Borrar</a></button></td>
+                        <td><button class="button is-danger is-outlined is-pulled-right" 
+                            onclick="API.deleteProduct(1, {{ id }})">
+                            <span><a href="javascript:location.reload()">Borrar</a></span>
+                            <span class="icon is-small">
+                            <i class="fas fa-times"></i></span>
+                        </button></td>
+                        <td>
+                            <button id="edit-button" class="button is-warning is-outlined is-inverted is-pulled-right" onclick="refs.modal.open({{ id }})"> 
+                            <!-- Agrego el botón editar pasandole un producto (para utilizarlo
+                                en el if de modal.open()) -->
+                                <span>Editar</span>
+                                <span class="icon is-small">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </button>
+                        </td>
                         <!-- Borra un producto y recarga la pagina para mostrar el cambio -->
                     </tr>
                 {{/ each }}
@@ -106,7 +125,7 @@
     <script id="select-template" type="text/x-handlebars-template">
         <div class="select">
             <select id="select-prod">
-                <option disabled selected value="">Seleccione un producto</option>
+                <option id="select-prod-option" disabled selected value="">Seleccione un producto</option>
                 {{# each products }}
                     <option value="{{ id }}">{{ name }}</option>
                 {{/ each }}

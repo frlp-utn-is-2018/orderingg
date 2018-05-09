@@ -44,23 +44,46 @@
      *
      **/
     function onAddProduct() {
-		if(state.quantity >= 1){				//Si es una cantidad válida, acepta los valores y los carga
-			API.addProduct(1, state.selectedProduct, state.quantity)
-            .then(function (r) {
-                if (r.error) {
-                    console.error(r.error);
-                } else {
-                    API.getOrder().then(function (data) {
-                        refs.table.update(data);
-                    });
+        if (state.quantity >= 1) {//Si es una cantidad válida, acepta los valores y los carga
+            API.addProduct(1, state.selectedProduct, state.quantity)
+                .then(function (r) {
+                    if (r.error) {
+                        console.error(r.error);
+                    } else {
+                        API.getOrder().then(function (data) {
+                            refs.table.update(data);
+                        });
 
-                    refs.modal.close();
-                }
-            });
-        }else{									//Si es nulo o negativo, muestra mensaje de error
-        	alert("Error. No puede ingresarse una cantidad negativa o nula.");
+                        refs.modal.close();
+                    }
+                });
+        } else {				//Si es nulo o negativo, muestra mensaje de error
+            alert("Error. No puede ingresarse una cantidad negativa o nula.");
         }
     }
+
+    function onEditProduct() {
+        const productId = document.getElementById('select-prod').value;
+        const product = API.getOrderProduct(1, productId);
+        if (state.quantity >= 1) {
+            API.editProduct(1, productId, state.quantity, product)
+                .then(function (r) {
+                    if (r.error) {
+                        console.error(r.error);
+                    } else {
+                        API.getOrder().then(function (data) {
+
+                            refs.table.update(data);
+                        });
+
+                        refs.modal.close();
+                    }
+                });
+        } else {
+            alert("Error. No puede ingresarse una cantidad negativa o nula.");
+        }
+    }
+
 
     /**
      * Inicializa la aplicacion
@@ -72,6 +95,7 @@
             onProductSelect: onProductSelect,
             onChangeQunatity: onChangeQunatity,
             onAddProduct: onAddProduct,
+            onEditProduct: onEditProduct,
         });
 
         // Inicializamos la tabla
