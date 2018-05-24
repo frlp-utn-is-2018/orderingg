@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orderingg</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+</head>
+<body>
+    <main class="container">
+        <h1 class="title">Lista de compra</h1>
+
+        <div class="columns">
+            <div class="column is-12">
+                <button class="button is-primary is-pulled-right" onclick="refs.modal.open()">
+                    <span class="icon"><i class="fas fa-plus"></i></span>
+                    <span>Agregar</span>
+                </button>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-12" id="orders">
+            </div>
+        </div>
+        <div class="modal" id="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p id="save-title" class="modal-card-title">Agregar producto</p>
+                    <p id="edit-title" class="modal-card-title">Editar producto</p>
+                    <button class="delete" aria-label="close" onclick="refs.modal.close()"></button>
+                </header>
+                <section class="modal-card-body">
+                    <form>
+                        <div class="field">
+                            <labe class="label">Seleccionar producto</labe>
+                            <div id="select" class="control"></div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Cantidad</label>
+                            <div class="control">
+                                <input id="quantity" class="input" type="number" min="1" value="1" required>
+                                <p class="help is-danger is-hidden">Por favor ingrese un numero mayor a 0</p>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" id="total-price"></label>
+                        </div>
+                    </form>
+                </section>
+                <footer class="modal-card-foot">
+                    <button id="save-button" class="button is-success" disabled="disabled">Guardar</button>
+                    <button id="edit-button" class="button is-warning">Editar</button>
+                    <button class="button" onclick="refs.modal.close()">Cancelar</button>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    {% raw %} <!-- raw indica a jinja2 que no compile esta porcion de html -->
+
+    <!-- Template handlebars de la tabla -->
+    <script id="table-template" type="text/x-handlebars-template">
+        <table class="table is-fullwidth is-hoverable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio unitario</th>
+                    <th>Cantidad</th>
+                    <th>Precio total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{# each products }}
+                    <tr>
+                        <td>{{ id }}</td>
+                        <td>{{ name }}</td>
+                        <td>{{ price }}</td>
+                        <td>{{ quantity }}</td>
+                        <td>{{ totalPrice }}</td>
+                        <td>
+                            <button class="button is-small is-warning" onClick="refs.modal.openEdit({ id: {{ id }}, quantity: {{ quantity }} })">
+                                <i class="fa fa-edit"></i>
+                            </button>
+
+                            <button class="button is-small is-danger" onClick="refs.global.onDeleteProduct({{ id }})">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {{/ each }}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Total</td>
+                    <td>{{ orderPrice }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </script>
+
+    <!-- Template handlebars del select de productos -->
+    <script id="select-template" type="text/x-handlebars-template">
+        <div class="select">
+            <select id="select-prod" required>
+                <option disabled selected value="">Seleccione un producto</option>
+                {{# each products }}
+                    <option value="{{ id }}">{{ name }}</option>
+                {{/ each }}
+            </select>
+        </div>
+
+        <p class="help is-danger is-hidden"></p>
+    </script>
+    {% endraw %}
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+
+<!-- Componente de la modal-->
+<script src="/static/js/modal.js"></script>
+
+<!-- Componente de la tabla -->
+<script src="/static/js/table.js"></script>
+
+<!-- Componente del select -->
+<script src="/static/js/select.js"></script>
+
+<!-- Funciones para interactuar con el backend -->
+<script src="/static/js/api.js"></script>
+
+<!-- Inicializa la app -->
+<script src="/static/js/index.js"></script>
+</html>
