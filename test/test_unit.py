@@ -1,3 +1,6 @@
+#coding=utf-8
+
+from sqlalchemy import and_
 import os
 import unittest
 
@@ -51,6 +54,26 @@ class OrderingTestCase(TestCase):
 
         # Verifica que en la lista de productos haya un solo producto
         self.assertEqual(len(p), 1, "No hay productos")
+
+    def test_delete(self):
+        #Creo un producto
+        prod = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(prod)
+
+        #Creo una orden
+        order = Order(id= 1)
+        db.session.add(order)
+
+        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= prod)
+        db.session.add(orderProduct)
+        db.session.commit()
+        
+        resp = self.client.delete('order/1/product/1')
+
+        #Verifica que el producto se haya borrado correctamente
+        self.assert200(resp, "Borrado incorrecto")
+
+
 
 if __name__ == '__main__':
     unittest.main()
