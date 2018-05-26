@@ -99,6 +99,46 @@ class OrderingTestCase(TestCase):
         ])
         self.assertEqual(150, total, "El precio total no se calcula bien")
     
+         
+#--------------------------- Actividad 3 - Inciso 2.b ------------------------------------
+    def test_funcionamiento_get(self):
+        # Creo la orden
+        o = Order(id=1)
+        db.session.add(o)
+
+        # Creo el producto
+        p = Product(id=1, name='Cuchillo', price=60)
+        db.session.add(p)
+
+        # Creo la relación entre producto y orden
+        orderProduct = OrderProduct(order_id=1, product_id=1, quantity=1, product=p)
+        db.session.add(orderProduct)
+        db.session.commit()
+
+        # Comparo viendo si me devuelve un 200
+        resp = self.client.get('order/1/product/1')
+        self.assert200(resp,"Fallo el GET")
+#---------------------------- Fin actividad 3 - Inciso 2.b -------------------------------
+
+#--------------------------- Actividad 3 - Inciso 2.a ------------------------------------
+    def test_cargar_negativo(self):
+        # Creo la orden
+        o = Order(id=1)
+        db.session.add(o)
+
+        # Creo el producto
+        p = Product(id=1, name='Cuchillo', price=60)
+        db.session.add(p)
+
+        # Creo la relación entre producto y orden
+        orderProduct = OrderProduct(order_id=1, product_id=1, quantity=-1, product= p)
+        db.session.add(orderProduct)
+        db.session.commit()
+
+        # Comparo con el comando 'len' para ver si se agregó o no
+        op = OrderProduct.query.all()
+        self.assertEqual(len(op),0,"Se creo el producto")
+#---------------------------- Fin actividad 3 - Inciso 2.a -------------------------------
 
 
 if __name__ == '__main__':
