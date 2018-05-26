@@ -55,7 +55,7 @@ class OrderingTestCase(TestCase):
      #Ejercicio 1a - Probar el metodo PUT
 
     def test_put_method(self):
-        #Creo un producto y lo inseto a la db
+        #Creo un producto y lo inserto a la db
         
         o = Order(id= 1)
         db.session.add(o)
@@ -74,6 +74,31 @@ class OrderingTestCase(TestCase):
         }
         resp = self.client.put('order/1/product/1', data=json.dumps(data), content_type='application/json')
         self.assert200(resp, "Fallo el PUT")
+
+    #Ejercicio 1c - Verificar OrderProduct.TotalPrice
+
+    def test_totalPrice(self):
+        #Creo dos productos y los inserto a la db
+        
+        o = Order(id= 1)
+        db.session.add(o)
+
+        p = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(p)
+        
+        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 3, product= p)
+        db.session.add(orderProduct)
+
+        db.session.commit()
+
+        #Obtengo la orden, obtengo su TotalPrice y lo chequeo
+
+        orden= Order.query.get(1)
+        total= sum([
+            product.price * product.quantity for product in orden.products
+        ])
+        self.assertEqual(150, total, "El precio total no se calcula bien")
+    
          
 #--------------------------- Actividad 3 - Inciso 2.b ------------------------------------
     def test_funcionamiento_get(self):
