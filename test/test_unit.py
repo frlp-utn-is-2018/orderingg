@@ -73,6 +73,18 @@ class OrderingTestCase(TestCase):
         #Verifica que el producto se haya borrado correctamente
         self.assert200(resp, "Borrado incorrecto")
 
+    def test_crear_producto_nombre_vacio(self):
+        data = {
+            'name': '',
+            'price': 45
+        }
+
+        self.client.post('/product', data=json.dumps(data), content_type='application/json')
+
+        p = Product.query.all()
+
+        # Verifica que no haya productos en la lista de productos
+        self.assertEqual(len(p), 0, "Se creó el producto")
 
 
 if __name__ == '__main__':
