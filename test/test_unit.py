@@ -52,6 +52,30 @@ class OrderingTestCase(TestCase):
         # Verifica que en la lista de productos haya un solo producto
         self.assertEqual(len(p), 1, "No hay productos")
 
+     #Ejercicio 1a - Probar el metodo PUT
+
+    def test_put_method(self):
+        #Creo un producto y lo inseto a la db
+        
+        o = Order(id= 1)
+        db.session.add(o)
+
+        p = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(p)
+
+        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= p)
+        db.session.add(orderProduct)
+        db.session.commit()
+
+        #Modifico la quantity del producto con un PUT
+
+        data = {
+            'quantity': 5
+        }
+        resp = self.client.put('order/1/product/1', data=json.dumps(data), content_type='application/json')
+        self.assert200(resp, "Fallo el PUT")
+         
+
 if __name__ == '__main__':
     unittest.main()
 
