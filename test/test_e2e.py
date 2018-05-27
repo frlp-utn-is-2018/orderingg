@@ -54,7 +54,41 @@ class Ordering(unittest.TestCase):
         self.driver.close()
         self.app_context.pop()
 
-    #Moradillo --- Ejercicio 1b - Verificar que el modal "Editar" tenga datos
+    def test_eliminación_fila_correspondiente(self):
+        #Creo los productos
+        prod = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(prod)
+        prod2 = Product(id= 2, name= 'Calabaza', price= 30)
+        db.session.add(prod)
+
+        #Creo una orden
+        order = Order(id= 1)
+        db.session.add(order)
+
+        #Añado los productos a la orden
+        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= prod)
+        db.session.add(orderProduct)
+        orderProduct = OrderProduct(order_id= 1, product_id= 2, quantity= 1, product= prod2)
+        db.session.add(orderProduct)
+        db.session.commit()
+
+        driver = self.driver
+        driver.get(self.baseURL)
+
+        time.sleep(1)
+
+        delete_product_button = driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr/td[6]/button[2]')
+        delete_product_button.click()
+        
+        time.sleep(1)
+
+        op = OrderProduct.query.all()
+
+        # Verifica que se haya borrado el producto de la lista de productos
+        self.assertEqual(len(op), 1, "No se borró el producto")
+
+        #Verifica que se haya borrado el producto correcto
+        self.assertNotEqual(op[0].product, prod, "No se borró el producto correcto")
 
     def test_edit_content(self):
         #--Agrego un producto a la db
