@@ -46,6 +46,34 @@ class Ordering(unittest.TestCase):
         modal = driver.find_element_by_id('modal')
         assert modal.is_displayed(), "El modal no esta visible"
 
+    #--------Ejercicio 4-3 | Test de integración | verificar que se haya solucionado el bug no mostraba
+    #--------el nombre del producto en la tabla
+    def test_show_name_in_table(self):
+        #Agrego Product
+        p = Product(id=1, name="Guitarra", price=1000)
+        db.session.add(p)
+        
+        #Agrego Order
+        o = Order(id=1)
+        db.session.add(o)
+        
+        #Agrego OrderProduct
+        op = OrderProduct(order_id=1, product_id=1, quantity=1, product=p)
+        db.session.add(op)
+        
+        db.session.commit()
+        
+        driver = self.driver
+        driver.get(self.baseURL)
+        
+        #Obtengo el path de la <td> donde va el nombre del primer producto agregado.
+        producto_agregado = driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr[1]/td[2]').text
+        
+        #Se supone que el nombre del producto en esa columna tiene que coincidir con el que agregué,
+        #que es "Guitarra". De no serlo fallará el test, por lo tanto no se habría solucionado el bug.
+        #Si no muestra el producto aparecería "" != "Guitarra" 
+        assert producto_agregado == 'Guitarra', 'No muestra el producto en la tabla'
+
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
 
