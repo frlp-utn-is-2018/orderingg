@@ -90,6 +90,30 @@ class Ordering(unittest.TestCase):
         #Verifica que se haya borrado el producto correcto
         self.assertNotEqual(op[0].product, prod, "No se borró el producto correcto")
 
+    def test_edit_content(self):
+        #--Agrego un producto a la db
+        p = Product(id=1, name="Silla", price=50)
+        db.session.add(p)
+        o = Order(id=1)
+        db.session.add(o)
+        op = OrderProduct(order_id=1, product_id=1, quantity=3, product=p)
+        db.session.add(op)
+        db.session.commit()
+        #--Click en editar en el producto que acabo de agregar
+        driver = self.driver
+        driver.get(self.baseURL)
+        time.sleep(5)
+        edit_product_button = driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr/td[6]/button[1]')
+        edit_product_button.click()
+        #--Verificar si el producto anterior aparece en el modal
+        time.sleep(2)
+        #--Verifico que el nombre sea el correcto
+        content_name = driver.find_element_by_xpath('//*[@id="select-prod"]/option[2]').text
+        assert (content_name == "Silla"), "El modal no tiene datos - Error en nombre"
+        #--Verifico que la quantity sea la correcta
+        content_quantity = driver.find_element_by_id('quantity').get_attribute('value')
+        assert (content_quantity == "3"), "El modal no tiene datos - Error en cantidad"
+
 if __name__ == "__main__":
     unittest.main()
 
