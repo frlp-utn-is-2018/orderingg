@@ -175,6 +175,7 @@ class Ordering(unittest.TestCase):
 	    self.assertEqual(len(p), 0, "Hay productos cargados")
 #---------------------------------------- Fin actividad 3 - Inciso 2.c --------------------------------------------
 
+=======
 if __name__ == "__main__":
     unittest.main()
 
