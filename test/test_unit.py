@@ -115,8 +115,12 @@ class OrderingTestCase(TestCase):
         db.session.add(orderProduct)
         db.session.commit()
 
-        # Comparo viendo si me devuelve un 200
+        # Comparo viendo si me devuelve un 200 y verifico además que el producto se haya cargado correctamente
         resp = self.client.get('order/1/product/1')
+        data = json.loads(resp.data)
+        
+        self.assertEqual(str(data['name']),'Cuchillo',"No cargo bien el producto")
+        self.assertEqual(float(data['price']),60.0,"No cargo bien el producto")
         self.assert200(resp,"Fallo el GET")
 #---------------------------- Fin actividad 3 - Inciso 2.b -------------------------------
 
