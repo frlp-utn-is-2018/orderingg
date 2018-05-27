@@ -144,6 +144,32 @@ class OrderingTestCase(TestCase):
         self.assertEqual(len(op),0,"Se creo el producto")
 #---------------------------- Fin actividad 3 - Inciso 2.a -------------------------------
 
+#----------------------------Actividad de test 4 A----------------------------------------
+    def test_get_product_method(self):
+        p=Product(name="Cuchara", price=60)
+        db.session.add(p)
+        db.session.commit()
+        resp = self.client.get('/product')    
+        data = json.loads(resp.data)
+        self.assertEqual(len(data), 1, "No agarró nada")
+
+#----------------------------Actividad de test 4 C----------------------------------------
+    # Es el mismo ejercicio que el 1 A (test_cargar_negativo)
+    # def test_create_order_product_with_negative_quantity(self):
+    #     o = Order(id=1)
+    #     db.session.add(o)
+    #
+    #     p = Product(id=1, name='Plato', price=100)
+    #     db.session.add(p)
+    #
+    #     orderProduct = OrderProduct(order_id=1, product_id=1, quantity=-10, product=p)
+    #     db.session.add(orderProduct)
+    #     db.session.commit()
+    #     
+    #     resp = self.client.post('order/1/product/1')
+    #     op = OrderProduct.query.all()
+    #     self.assertEqual(len(op), 0, "Se creo el producto") 
+
 
 if __name__ == '__main__':
     unittest.main()
