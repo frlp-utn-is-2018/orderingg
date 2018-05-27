@@ -52,6 +52,29 @@ class OrderingTestCase(TestCase):
         # Verifica que en la lista de productos haya un solo producto
         self.assertEqual(len(p), 1, "No hay productos")
 
+    def test_get_product_method(self):
+        p=Product(name="Cuchara", price=60)
+        db.session.add(p)
+        db.session.commit()
+        resp = self.client.get('/product')    
+        data = json.loads(resp.data)
+        self.assertEqual(len(data), 1, "No agarró nada")
+
+    def test_create_order_product_with_negative_quantity(self):
+        o = Order(id=1)
+        db.session.add(o)
+
+        p = Product(id=1, name='Plato', price=100)
+        db.session.add(p)
+
+        orderProduct = OrderProduct(order_id=1, product_id=1, quantity=-10, product=p)
+        db.session.add(orderProduct)
+        db.session.commit()
+        
+        resp = self.client.post('order/1/product/1')
+        op = OrderProduct.query.all()
+        self.assertEqual(len(op), 0, "Se creo el producto") 
+        
 if __name__ == '__main__':
     unittest.main()
 
