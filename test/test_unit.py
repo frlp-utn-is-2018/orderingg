@@ -52,10 +52,10 @@ class OrderingTestCase(TestCase):
         # Verifica que en la lista de productos haya un solo producto
         self.assertEqual(len(p), 1, "No hay productos")
 
-     #Ejercicio 1a - Probar el metodo PUT
+     #Moradillo --- Ejercicio 1a - Probar el metodo PUT
 
     def test_put_method(self):
-        #Creo un producto y lo inserto a la db
+        #--Creo un producto y lo inserto a la db
         
         o = Order(id= 1)
         db.session.add(o)
@@ -67,7 +67,7 @@ class OrderingTestCase(TestCase):
         db.session.add(orderProduct)
         db.session.commit()
 
-        #Modifico la quantity del producto con un PUT
+        #--Modifico la quantity del producto con un PUT
 
         data = {
             'quantity': 5
@@ -75,10 +75,10 @@ class OrderingTestCase(TestCase):
         resp = self.client.put('order/1/product/1', data=json.dumps(data), content_type='application/json')
         self.assert200(resp, "Fallo el PUT")
 
-    #Ejercicio 1c - Verificar OrderProduct.TotalPrice
+    #Moradillo --- Ejercicio 1c - Verificar OrderProduct.TotalPrice
 
     def test_totalPrice(self):
-        #Creo dos productos y los inserto a la db
+        #--Creo dos productos y los inserto a la db
         
         o = Order(id= 1)
         db.session.add(o)
@@ -91,7 +91,7 @@ class OrderingTestCase(TestCase):
 
         db.session.commit()
 
-        #Obtengo la orden, obtengo su TotalPrice y lo chequeo
+        #--Obtengo la orden, obtengo su TotalPrice y lo chequeo
 
         orden= Order.query.get(1)
         total= sum([
