@@ -142,6 +142,40 @@ class Ordering(unittest.TestCase):
         content_quantity = driver.find_element_by_id('quantity').get_attribute('value')
         assert (content_quantity == "3"), "El modal no tiene datos - Error en cantidad"
 
+
+#---------------------------------------- Actividad 3 - Inciso 2.c ------------------------------------------------
+	def test_negativa_quantity(self):
+	    # Creo un producto para que aparezca en el scroll
+	    p = Product(id=1, name="Vaso", price=50)
+	    db.session.add(p)
+	    o = Order(id=1)
+	    db.session.add(o)
+	    db.session.commit()
+	    driver = self.driver
+	    driver.get(self.baseURL)
+	    # Clickeo en el botón 'Agregar'
+	    add_product_button = driver.find_element_by_xpath('/html/body/main/div[1]/div/button')
+	    add_product_button.click()
+	    # Clickeo en la selección de producto
+	    select_product = driver.find_element_by_id('select-prod')
+	    select_product.click()
+	    # Clickeo en la opción 2 de la lista
+	    opcion_seleccionada = driver.find_element_by_xpath('//*[@id="select-prod"]/option[2]')
+	    opcion_seleccionada.click()
+	    # Le ingreso una cantidad negativa
+	    cantidad_product = driver.find_element_by_id('quantity')
+	    cant = cantidad_product.send_keys("-3")
+	    # Clickeo en el botón de guardado
+	    save_button = driver.find_element_by_id('save-button')
+	    save_button.click()
+	    #--Verificar si el producto anterior aparece en el modal
+	    time.sleep(2)
+	    # Verifica que en la lista de productos no haya
+	    p = Product.query.all()
+	    self.assertEqual(len(p), 0, "Hay productos cargados")
+#---------------------------------------- Fin actividad 3 - Inciso 2.c --------------------------------------------
+
+=======
 if __name__ == "__main__":
     unittest.main()
 
