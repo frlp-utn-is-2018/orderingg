@@ -144,7 +144,7 @@ class Ordering(unittest.TestCase):
 
 
 #---------------------------------------- Actividad 3 - Inciso 2.c ------------------------------------------------
-def test_negativa_quantity(self):
+	def test_negativa_quantity(self):
 	    # Creo un producto para que aparezca en el scroll
 	    p = Product(id=1, name="Vaso", price=50)
 	    db.session.add(p)
