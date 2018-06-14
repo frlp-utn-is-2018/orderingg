@@ -4,13 +4,16 @@ from app import db
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
+
 class Product(db.Model):
     """
-    Clase producto
+    Clase producto.
+
     attr id: la clave primaria del producto
     attr name: una descripción del producto
     attr price: precio unitario del producto
     """
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), index=True)
     price = db.Column(db.Float, index=True)
@@ -38,7 +41,6 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     products = relationship('OrderProduct')
 
-
     def __repr__(self):
         return '<Order {}>'.format(self.id)
 
@@ -54,7 +56,7 @@ class Order(db.Model):
     @property
     def serialize(self):
         """
-        Transforma el objeto en un formato serializable
+        Transforma el objeto en un formato serializable.
         :return:
         """
         return {
@@ -65,17 +67,19 @@ class Order(db.Model):
             'orderPrice': self.orderPrice
         }
 
+
 class OrderProduct(db.Model):
-    """
-    Clase OrderProduct, tabla transpuesta
-    """
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), primary_key=True)
+    """Clase OrderProduct, tabla transpuesta."""
+    
+    order_id = db.Column(db.Integer, db.ForeignKey(
+        'order.id'), primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), primary_key=True)
     product = relationship('Product')
     quantity = db.Column(db.Integer)
 
     @hybrid_property
     def price(self):
+        """Devuelve el precio de un producto."""
         return self.product.price
 
     @hybrid_property
@@ -88,7 +92,7 @@ class OrderProduct(db.Model):
     @property
     def serialize(self):
         """
-        Transforma el objeto en un formato serializable
+        Transforma el objeto en un formato serializable.
         :return:
         """
         return {
