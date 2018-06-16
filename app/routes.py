@@ -13,6 +13,7 @@ def hello():
     """Renderiza orders.html."""
     return render_template('orders.html')
 
+
 @rest.route("/product", methods=['GET', 'POST'])
 def products():
     """
@@ -23,7 +24,8 @@ def products():
     if request.method == 'POST':
         # Crea un nuevo producto recibiendo un JSON con atributos name y price
         # Ejemplo: {'name': 'Tenedor', 'price': 50}
-        p = Product(name=request.get_json()['name'], price=request.get_json()['price'])
+        p = Product(name=request.get_json()['name'],
+                    price=request.get_json()['price'])
         if p.name != '':
             db.session.add(p)
             db.session.commit()
@@ -33,6 +35,7 @@ def products():
         p = Product.query.all()
         return jsonify([i.serialize for i in p])
 
+
 @rest.route("/order", methods=['GET'])
 def orders():
     """
@@ -41,6 +44,7 @@ def orders():
 
     orders = Order.query.all()
     return jsonify([order.serialize for order in orders])
+
 
 @rest.route("/order/<pk>", methods=['GET'])
 def order(pk):
@@ -55,9 +59,10 @@ def order(pk):
 
     # Si la orden no existe, levantamos el error
     if (not order):
-        return jsonify({ 'error': 'not-found' }), 404
+        return jsonify({'error': 'not-found'}), 404
 
     return jsonify(order.serialize)
+
 
 @rest.route("/order/<pk>/product", methods=['POST'])
 def addProductToOrder(pk):
@@ -66,7 +71,7 @@ def addProductToOrder(pk):
 
     # Si la orden no existe, levantamos el error
     if (not order):
-        return jsonify({ 'error': '<order {}> not found'.format(pk) }), 404
+        return jsonify({'error': '<order {}> not found'.format(pk)}), 404
 
     product_data = request.get_json()
     product = product_data['product']
@@ -92,7 +97,8 @@ def addProductToOrder(pk):
     return jsonify(order.serialize), 201
 
 
-@rest.route("/order/<pk_order>/product/<pk_product>", methods=['GET', 'PUT', 'DELETE'])
+@rest.route("/order/<pk_order>/product/<pk_product>",
+            methods=['GET', 'PUT', 'DELETE'])
 def order_product_detail(pk_order, pk_product):
     """
     Obtiene un producto de una orden y modifica un producto de una orden.
@@ -100,7 +106,10 @@ def order_product_detail(pk_order, pk_product):
     Si no se encuentra la orden, se responde con un 404.
     Si no se encuentra el producto, se responde con un 404
     """
-    order_product = OrderProduct.query.filter(and_(OrderProduct.order_id==pk_order, OrderProduct.product_id==pk_product)).all()[0]
+    order_product = OrderProduct.query.filter(and_(OrderProduct.order_id ==
+                                                   pk_order,
+                                                   OrderProduct.product_id ==
+                                                   pk_product)).all()[0]
 
     if (not order_product):
         return jsonify({'error': 'not-found'}), 404
