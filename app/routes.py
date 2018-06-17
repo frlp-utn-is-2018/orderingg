@@ -7,27 +7,34 @@ from flask import request, jsonify, render_template, abort, current_app
 from flask import Blueprint
 rest = Blueprint('rest', __name__, template_folder='templates')
 
+
 @rest.route("/")
 def hello():
+    """Renderiza orders.html."""
     return render_template('orders.html')
+
 
 @rest.route("/product", methods=['GET', 'POST'])
 def products():
     """
-    Endpoint para obtener todos los productos o crear uno nuevo
+    Endpoint para obtener todos los productos o crear uno nuevo.
+
     :return:
     """
     if request.method == 'POST':
         # Crea un nuevo producto recibiendo un JSON con atributos name y price
         # Ejemplo: {'name': 'Tenedor', 'price': 50}
-        p = Product(name=request.get_json()['name'], price=request.get_json()['price'])
-        db.session.add(p)
-        db.session.commit()
+        p = Product(name=request.get_json()['name'],
+                    price=request.get_json()['price'])
+        if p.name != '':
+            db.session.add(p)
+            db.session.commit()
         return jsonify(p.serialize)
     else:
         # Obtiene todos los productos disponibles
         p = Product.query.all()
         return jsonify([i.serialize for i in p])
+
 
 @rest.route("/order", methods=['GET'])
 def orders():
@@ -37,6 +44,7 @@ def orders():
 
     orders = Order.query.all()
     return jsonify([order.serialize for order in orders])
+
 
 @rest.route("/order/<pk>", methods=['GET'])
 def order(pk):
@@ -51,9 +59,10 @@ def order(pk):
 
     # Si la orden no existe, levantamos el error
     if (not order):
-        return jsonify({ 'error': 'not-found' }), 404
+        return jsonify({'error': 'not-found'}), 404
 
     return jsonify(order.serialize)
+
 
 @rest.route("/order/<pk>/product", methods=['POST'])
 def addProductToOrder(pk):
@@ -62,7 +71,7 @@ def addProductToOrder(pk):
 
     # Si la orden no existe, levantamos el error
     if (not order):
-        return jsonify({ 'error': '<order {}> not found'.format(pk) }), 404
+        return jsonify({'error': '<order {}> not found'.format(pk)}), 404
 
     product_data = request.get_json()
     product = product_data['product']
@@ -75,7 +84,7 @@ def addProductToOrder(pk):
     if (product_exists):
         return jsonify({
             'error': '<product {}> exists in <order {}>. Use PUT method'
-                .format(product['id'], pk)
+            .format(product['id'], pk)
         }), 400
 
     orderProduct = OrderProduct(quantity=product_data['quantity'])
@@ -87,19 +96,23 @@ def addProductToOrder(pk):
 
     return jsonify(order.serialize), 201
 
-@rest.route("/order/<pk_order>/product/<pk_product>", methods=['GET', 'PUT', 'DELETE'])
+
+@rest.route("/order/<pk_order>/product/<pk_product>",
+            methods=['GET', 'PUT', 'DELETE'])
 def order_product_detail(pk_order, pk_product):
     """
-    Obtiene un producto de una orden y modifica un producto de una orden
+    Obtiene un producto de una orden y modifica un producto de una orden.
 
     Si no se encuentra la orden, se responde con un 404.
     Si no se encuentra el producto, se responde con un 404
     """
-
-    order_product = OrderProduct.query.filter(and_(OrderProduct.order_id==pk_order, OrderProduct.product_id==pk_product)).all()[0]
+    order_product = OrderProduct.query.filter(and_(OrderProduct.order_id ==
+                                                   pk_order,
+                                                   OrderProduct.product_id ==
+                                                   pk_product)).all()[0]
 
     if (not order_product):
-        return jsonify({ 'error': 'not-found' }), 404
+        return jsonify({'error': 'not-found'}), 404
 
     order_product_json = order_product.serialize
 
@@ -118,6 +131,7 @@ def order_product_detail(pk_order, pk_product):
 
     db.session.commit()
     return jsonify(order_product_json)
+
 
 @rest.route('/shutdown')
 def server_shutdown():

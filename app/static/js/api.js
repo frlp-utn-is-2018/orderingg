@@ -5,7 +5,7 @@ const API = (function () {
      * @param {Number} orderId id de la orden
      */
     function getOrder(orderId) {
-        return fetch('/order/1')
+        return fetch("/order/1")
             .then(function toJson(r) {
                 return r.json();
             });
@@ -16,7 +16,7 @@ const API = (function () {
      *
      */
     function getProducts() {
-        return fetch('/product')
+        return fetch("/product")
             .then(function toJson(r) {
                 return r.json();
             });
@@ -38,14 +38,14 @@ const API = (function () {
      *
      */
     function editProduct(orderId, productId, quantity, product) {
-        const data = JSON.stringify({ quantity: quantity, product: product })
+        const data = JSON.stringify({ quantity: quantity, product: product });
 
         return fetch(`/order/${ orderId }/product/${ productId }`,
             {
-                method: 'PUT',
+                method: "PUT",
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
                 },
                 body: data
             }
@@ -57,10 +57,10 @@ const API = (function () {
     function deleteProduct(orderId, productId) {
         return fetch(`/order/${ orderId }/product/${ productId }`,
             {
-                method: 'DELETE',
+                method: "DELETE",
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
                 }
             }
         ).then(function toJson(r) {
@@ -72,14 +72,14 @@ const API = (function () {
      * Agrega un producto a una orden
      **/
     function addProduct(orderId, product, quantity) {
-        const data = JSON.stringify({ quantity: quantity, product: product })
+        const data = JSON.stringify({ quantity: quantity, product: product });
 
         return fetch(`/order/${ orderId }/product`,
             {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
                 },
                 body: data
             }
@@ -95,5 +95,5 @@ const API = (function () {
         editProduct,
         deleteProduct,
         addProduct
-    }
-})()
+    };
+})();
