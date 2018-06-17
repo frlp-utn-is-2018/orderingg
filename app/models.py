@@ -1,7 +1,7 @@
 # coding=utf-8
 
 """
-Documentacion faltante.
+Correccion de errores.
 
 Completo la documentacion faltante
 """
