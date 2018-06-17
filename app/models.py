@@ -1,4 +1,10 @@
-#coding=utf-8
+# coding=utf-8
+
+"""
+Correccion de errores.
+
+Completo la documentacion faltante
+"""
 
 from app import db
 from sqlalchemy.orm import relationship
@@ -19,12 +25,18 @@ class Product(db.Model):
     price = db.Column(db.Float, index=True)
 
     def __repr__(self):
+        """
+        Documentacion faltante.
+
+        Completo la documentacion faltante
+        """
         return '{}'.format(self.name)
 
     @property
     def serialize(self):
         """
-        Transforma el objeto en un formato serializable
+        Transforma el objeto en un formato serializable.
+
         :return:
         """
         return {
@@ -33,22 +45,28 @@ class Product(db.Model):
             'price': self.price
         }
 
+
 class Order(db.Model):
     """
-    Clase orden
+    Clase orden.
+
     attr id: la clave primaria de la orden
     """
+
     id = db.Column(db.Integer, primary_key=True)
     products = relationship('OrderProduct')
 
     def __repr__(self):
+        """
+        Documentacion faltante.
+
+        Completo la documentacion faltante
+        """
         return '<Order {}>'.format(self.id)
 
     @hybrid_property
-    def orderPrice(self):
-        """
-        Computa el precio total de la orden
-        """
+    def orderprice(self):
+        """Computa el precio total de la orden."""
         return sum([
             product.price * product.quantity for product in self.products
         ])
@@ -57,6 +75,7 @@ class Order(db.Model):
     def serialize(self):
         """
         Transforma el objeto en un formato serializable.
+
         :return:
         """
         return {
@@ -70,10 +89,11 @@ class Order(db.Model):
 
 class OrderProduct(db.Model):
     """Clase OrderProduct, tabla transpuesta."""
-    
+
     order_id = db.Column(db.Integer, db.ForeignKey(
         'order.id'), primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), primary_key=True)
+    product_id = db.Column(db.Integer,
+                           db.ForeignKey('product.id'), primary_key=True)
     product = relationship('Product')
     quantity = db.Column(db.Integer)
 
@@ -83,16 +103,15 @@ class OrderProduct(db.Model):
         return self.product.price
 
     @hybrid_property
-    def totalPrice(self):
-        """
-        Computa el precio total del producto
-        """
+    def totalprice(self):
+        """Computa el precio total del producto."""
         return self.product.price * self.quantity
 
     @property
     def serialize(self):
         """
         Transforma el objeto en un formato serializable.
+
         :return:
         """
         return {
